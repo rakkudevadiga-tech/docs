@@ -1,67 +1,126 @@
-# GitHub Docs <!-- omit in toc -->
+# Incident Report & Resolution Management System
 
-Welcome to GitHub Docs! GitHub’s documentation is open source, meaning anyone from inside or outside the company can contribute. For full contributing guidelines, visit our [contributing guide](https://github.com/github/docs/blob/main/.github/CONTRIBUTING.md).
+Enterprise-grade hospital clinical safety, adverse event reporting, and root-cause resolution management web application.
 
-## Architecture overview
+---
 
-```mermaid
-flowchart LR
-    author[Contributors\nGitHub employees and open source contributors]
-    publicRepo[github/docs\nPublic content repository]
-    internalRepo[github/docs-internal\nPrivate repository for GitHub staff]
-    content[Content source\n/content, /data, assets]
-    validation[Linting, tests, frontmatter validation]
-    build[Docs site build\nRendering + navigation + redirects]
-    preview[Staging preview\nReview changes before publishing]
-    cdn[Production site\ndocs.github.com]
-    users[Developers, users, and GitHub customers]
+## 🌐 6-Page Workflow Architecture
 
-    author --> publicRepo
-    author --> internalRepo
-    publicRepo --> content
-    internalRepo --> content
-    content --> validation
-    validation --> build
-    build --> preview
-    preview --> cdn
-    cdn --> users
+### 📊 Page 1 — Home / Dashboard
+- **Key Performance Indicators (KPIs):**
+  - **Total incidents:** Complete count of logged reports across the facility.
+  - **Open incidents:** Incidents actively in investigation, corrective planning, or verification.
+  - **High-priority incidents:** Critical and high-severity clinical hazards requiring expedited intervention.
+  - **Resolved incidents:** Closed reports with completed corrective actions and signed audit verification.
+  - **Overdue actions:** Remediation items past their target completion deadline.
+  - **Resolution percentage:** Live calculated metric: `(Resolved / Total) * 100`.
+- **Primary Buttons:**
+  - `➕ Report Incident`: Direct jump to Page 2.
+  - `📊 Management Dashboard`: Direct jump to Page 5 Follow-up registry.
+  - `📲 Staff QR Direct Link`: Generates staff QR poster and copyable direct submission link.
 
-    publicRepo -. sync .-> internalRepo
-    build -. generated pages .-> users
+---
+
+### 📝 Page 2 — Report Incident (Frontline Staff & Mobile QR Accessible)
+Directly accessible by frontline hospital staff via QR code scan or direct web link without requiring management passwords:
+- **Incident date/time:** Timestamp of occurrence or discovery.
+- **Location/department:** Inpatient Ward, ICU, OR, ER, Pharmacy, Radiology, etc.
+- **Incident type:** Patient Fall, Medication Error, Equipment Malfunction, etc.
+- **Priority:** Critical (Sentinel Event), High, Medium, Low (Near Miss).
+- **Reporter:** Name & title or option to submit 100% anonymously.
+- **People involved:** Patients (MRN), clinical personnel, attendants.
+- **Witnesses:** Direct observers and corroborating staff.
+- **What happened:** Detailed chronological factual narrative.
+- **Immediate action:** First-aid, medical containment, or device quarantine.
+- **Injury/harm/damage:** Severity assessment from Near Miss to Severe Harm.
+- **Management notified:** Escalation status, supervisor alerted, and timestamp.
+- **Contributing factors:** Workload pressure, communication gaps, alarm fatigue, policy ambiguity.
+
+*On submission, an auto-incremented tracking reference (e.g. `IR-2026-0005`) and tracking QR code are instantly generated.*
+
+---
+
+### 🔍 Page 3 — Investigation (Management & Owner)
+Structured root cause analysis framework for clinical investigators:
+- **Investigator:** Name, role, and department.
+- **Investigation date:** Formal review date.
+- **Evidence:** Device logs, CCTV footage, physical inspections, medical chart audit.
+- **Findings:** Objective summary of facts determined.
+- **Root cause:** 5-Whys determination and underlying systemic failure point.
+- **Contributing factors:** Organizational, environmental, and human factors.
+
+---
+
+### 🛠️ Page 4 — Corrective Action (Management & Owner)
+CAPA (Corrective and Preventive Action) action item planner:
+- **Corrective action:** Immediate remedial repair to fix the existing vulnerability.
+- **Preventive action:** Long-term proactive safeguard to prevent institutional recurrence.
+- **Responsible person:** Assigned action owner.
+- **Target completion date:** Due date for implementation.
+- **Resources required:** Budget, IT configuration, simulation training, hardware.
+- **Action status:** `In Progress`, `Pending`, `Completed`, or `Overdue`.
+- **Progress percentage:** Interactive 0–100% slider.
+
+---
+
+### 📋 Page 5 — Follow-up (Management & Owner)
+Executive monitoring table tracking real-time resolution telemetry:
+| Incident | Owner | Due Date | Stage | Progress | Actions |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **IR-2026-0001** | Nurse Manager | 10 Oct | Investigation | 35% | View / Investigate / CAPA / Owner Edit |
+| **IR-2026-0002** | Safety Officer | 12 Oct | Corrective Action | 65% | View / Investigate / CAPA / Owner Edit |
+
+- Includes live keyword search, stage filtering, priority filtering, and CSV dataset export.
+
+---
+
+### ✅ Page 6 — Verification & Closure (Management & Owner)
+Formal audit verification and quality closure sign-off:
+- **Action completed?** `Yes`, `Partial`, or `No`.
+- **Effectiveness verified?** `Yes`, `Pending observation`, or `No`.
+- **Recurrence occurred?** `No` or `Yes`.
+- **Verification remarks:** Auditor notes, sampling audit results, and clinical observations.
+- **Verified by:** Authorized Quality Director or Risk Auditor.
+- **Closure date:** Date of formal sign-off.
+- **Final status:** `Closed — Fully Resolved`, `Closed — Residual Risk Mitigated`, or `Reopened`.
+- *Generates an official printable Incident Dossier & Resolution Certificate.*
+
+---
+
+## 🔐 Role-Based Access Control (2 Privileged Access Levels + Public Staff)
+
+Per system design, exactly **2 privileged access levels** are configured alongside direct frontline staff access:
+
+| Access Role | Privileges | Default Passcode |
+| :--- | :--- | :--- |
+| **👑 System Owner ("Me")** | **Master Edit Access:** Can edit **ANY** field of **ANY** incident at any time, override lifecycle stages, delete records, customize hospital departments/incident types, change role passcodes, and backup/restore database. | `owner9999` |
+| **📊 Management** | Full access to view all incident details, dashboard metrics, enter investigations, assign corrective actions, monitor follow-up, and execute closure sign-offs. | `mgmt2026` |
+| **📱 Frontline Staff** | **Direct Submit Access:** Direct link or QR code opens Page 2 (Report Incident) with confidential filing and tracking receipt. Internal management review pages are locked. | *No Password Required* |
+
+*(Passcodes can be changed by the System Owner under the **Owner Settings** panel).*
+
+---
+
+## 📲 Staff QR Code & Direct Link
+
+- Click **"Staff QR Poster"** in the top navigation to view or print the ready-to-hang ward notice.
+- Frontline staff scanning the QR code or clicking the link are routed directly to:
+  `index.html?mode=staff&page=report`
+- Staff mode restricts navigation to the reporting form and status lookup to protect sensitive clinical audit discussions.
+
+---
+
+## 🚀 How to Run the Application
+
+The system is 100% self-contained and runs immediately on Windows without requiring Node.js, Python, or external installations:
+
+### Option 1: Direct Browser Launch
+- Double-click [`index.html`](file:///C:/Users/User/.gemini/antigravity/scratch/incident-management-system/index.html) in Windows File Explorer to open in **Google Chrome**, **Microsoft Edge**, or **Firefox**.
+
+### Option 2: 1-Click Windows Batch Launcher
+- Double-click [`start-server.bat`](file:///C:/Users/User/.gemini/antigravity/scratch/incident-management-system/start-server.bat) to launch the local web server at `http://localhost:8080` and open your browser automatically.
+
+### Option 3: PowerShell Command
+```powershell
+Start-Process "C:\Users\User\.gemini\antigravity\scratch\incident-management-system\index.html"
 ```
-
-This architecture shows how documentation source files are authored in the Docs repositories, validated through automated checks, transformed into rendered pages, and published to the public documentation site for users.
-
-## Quick links by contributor type
-
-* **Hubbers (GitHub employees):** See [CONTRIBUTING.md](https://github.com/github/docs-content/blob/main/CONTRIBUTING.md) in the `docs-content` repository for GitHub-specific processes.
-
-* **Open source contributors:** See [CONTRIBUTING.md](https://github.com/github/docs/blob/main/.github/CONTRIBUTING.md) in the `docs` repository for a quick-start summary.
-
-## How we sync changes across Docs repositories
-
-There are two GitHub Docs repositories: 
-
-- **`github/docs`** (public): Open to external contributions
-
-- **`github/docs-internal`** (private): For GitHub employee contributions. 
-
-The two repositories sync frequently. Content changes in one are reflected in the other.  Hubbers might prefer to post in `docs` when working with a customer, but `docs` has limitations on the types of changes it accepts.
-
-**Important:** The `docs` repository accepts contributions to content files (`.md` files in `/content` and select `/data` sections like reusables only). Infrastructure files, workflows, and site-build changes happen in the `github/docs` repo and are managed by maintainers.
-
-## New to contributing
-
-Here are some resources to help you get started with open source contributions:
-
-* [Finding ways to contribute to open source on GitHub](https://docs.github.com/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
-* [Set up Git](https://docs.github.com/en/get-started/git-basics/set-up-git)
-* [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow)
-* [Collaborating with pull requests](https://docs.github.com/en/github/collaborating-with-pull-requests)
-
-## License
-
-This project is dual-licensed under:
-
-* **Creative Commons Attribution 4.0** - for documentation and content in the assets, content, and data folders (see [LICENSE](LICENSE))
-* **MIT License** - for code (see [LICENSE-CODE](LICENSE-CODE))
