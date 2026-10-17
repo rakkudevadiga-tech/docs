@@ -109,18 +109,3 @@ Per system design, exactly **2 privileged access levels** are configured alongsi
 - Staff mode restricts navigation to the reporting form and status lookup to protect sensitive clinical audit discussions.
 
 ---
-
-## 🚀 How to Run the Application
-
-The system is 100% self-contained and runs immediately on Windows without requiring Node.js, Python, or external installations:
-
-### Option 1: Direct Browser Launch
-- Double-click [`index.html`](file:///C:/Users/User/.gemini/antigravity/scratch/incident-management-system/index.html) in Windows File Explorer to open in **Google Chrome**, **Microsoft Edge**, or **Firefox**.
-
-### Option 2: 1-Click Windows Batch Launcher
-- Double-click [`start-server.bat`](file:///C:/Users/User/.gemini/antigravity/scratch/incident-management-system/start-server.bat) to launch the local web server at `http://localhost:8080` and open your browser automatically.
-
-### Option 3: PowerShell Command
-```powershell
-Start-Process "C:\Users\User\.gemini\antigravity\scratch\incident-management-system\index.html"
-```
